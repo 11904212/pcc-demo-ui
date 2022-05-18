@@ -1,0 +1,26 @@
+$mediaBreakpointMobile: 639px;
+$sideBarSize: 20em;
+
+main {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  flex-grow: 1;
+}
+.left-bar {
+  width: $sideBarSize;
+  background-color: lightgray;
+}
+.map-container {
+  flex-grow: 1;
+}
+
+@media (max-width: $mediaBreakpointMobile) {
+  main {
+    flex-direction: column;
+  }
+  .left-bar {
+    width: 100%;
+    height: $sideBarSize;
+  }
+}
