@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MapComponent } from './components/map/map.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { LayerSwitcherComponent } from './components/layer-switcher/layer-switcher.component';
+import { MapMenuComponent } from './components/map-menu/map-menu.component';
 import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatButtonModule} from "@angular/material/button";
@@ -16,7 +16,7 @@ import {MatButtonModule} from "@angular/material/button";
     AppComponent,
     MapComponent,
     SidebarComponent,
-    LayerSwitcherComponent
+    MapMenuComponent
   ],
   imports: [
     BrowserModule,

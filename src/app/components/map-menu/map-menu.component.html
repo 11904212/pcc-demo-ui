@@ -1,0 +1,27 @@
+<div class="button-stack">
+  <button mat-fab
+          color="primary"
+          class="map-menu-button"
+          [ngClass]="($userIsDrawing | async) ? 'map-menu-button-faded':''"
+          aria-label="button for start and stop drawing"
+          (click)="toggleDrawing()">
+    <mat-icon>draw</mat-icon>
+  </button>
+
+  <button mat-fab
+          class="map-menu-button"
+          [matMenuTriggerFor]="menu"
+          aria-label="button for switching between map layers">
+    <mat-icon>layers</mat-icon>
+  </button>
+</div>
+
+<mat-menu #menu="matMenu" xPosition="before">
+  <button mat-menu-item *ngFor="let layer of layers" (click)="selectLayer(layer)">
+    <span>{{layer.getClassName()}}</span>
+  </button>
+</mat-menu>
+
+
+
+

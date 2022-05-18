@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LayerSwitcherComponent } from './layer-switcher.component';
+import { MapMenuComponent } from './map-menu.component';
 
-describe('LayerSwitcherComponent', () => {
-  let component: LayerSwitcherComponent;
-  let fixture: ComponentFixture<LayerSwitcherComponent>;
+describe('MapMenuComponent', () => {
+  let component: MapMenuComponent;
+  let fixture: ComponentFixture<MapMenuComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LayerSwitcherComponent ]
+      declarations: [ MapMenuComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LayerSwitcherComponent);
+    fixture = TestBed.createComponent(MapMenuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
