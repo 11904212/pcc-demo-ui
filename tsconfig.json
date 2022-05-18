@@ -21,7 +21,9 @@
     "lib": [
       "es2020",
       "dom"
-    ]
+    ],
+    "strictPropertyInitialization": false,
+    "skipLibCheck": true, //https://github.com/openlayers/openlayers/issues/12497#issuecomment-893339885
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
