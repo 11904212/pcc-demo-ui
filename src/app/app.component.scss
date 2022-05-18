@@ -9,10 +9,17 @@ main {
 }
 .left-bar {
   width: $sideBarSize;
-  background-color: lightgray;
 }
 .map-container {
   flex-grow: 1;
+}
+
+.layer-switcher {
+  position: absolute;
+  right: 0;
+  bottom: 2em;
+  margin: 0.5em;
+
 }
 
 @media (max-width: $mediaBreakpointMobile) {
