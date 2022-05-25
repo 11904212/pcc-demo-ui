@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {ItemService} from "../../services/item.service";
 import {Observable} from "rxjs";
 import {ItemInfo} from "../../dtos/item-info";
+import {GeoTiffService} from "../../services/geo-tiff.service";
 
 @Component({
   selector: 'app-sidebar',
@@ -15,13 +16,18 @@ export class SidebarComponent {
   $itemsLoading = this.itemService.$isLoading();
 
   constructor(
-    private itemService: ItemService
+    private itemService: ItemService,
+    private geoTiffService: GeoTiffService
   ) { }
 
   loadItems():void {
     this.itemService.setCollection(['sentinel-2-l2a']);
     this.itemService.setDateTimeFrom(new Date(2021,5,22));
     this.itemService.loadItems();
+  }
+
+  loadImage(item: ItemInfo):void {
+    this.geoTiffService.getGeoTiff(item.id);
   }
 
 }

@@ -66,6 +66,11 @@ export class DrawService {
     return result;
   }
 
+  public getDrawingVectorSource(): VectorSource {
+    return this.drawSource;
+  }
+
+
   private undoLastPoint():void {
     if (this.drawingInteraction){
       this.drawingInteraction.removeLastPoint();
