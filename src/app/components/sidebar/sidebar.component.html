@@ -1,1 +1,9 @@
 <p>sidebar works!</p>
+
+<ul *ngFor="let item of $itemList | async">
+  <li>{{item.dateTime}}</li>
+</ul>
+
+<button [disabled]="$itemsLoading | async" (click)="loadItems()">load items</button>
+
+<p>{{$error | async}}</p>

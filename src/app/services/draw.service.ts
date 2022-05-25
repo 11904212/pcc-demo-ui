@@ -5,6 +5,9 @@ import {Draw, Modify, Snap} from "ol/interaction";
 import Map from 'ol/Map';
 import VectorLayer from "ol/layer/Vector";
 import {BehaviorSubject, Observable} from "rxjs";
+import {GeoJSON} from "ol/format";
+import {GeoJSONGeometry, GeoJSONGeometryCollection} from "ol/format/GeoJSON";
+import {Geometry} from "ol/geom";
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +29,7 @@ export class DrawService {
   }
 
   public isDrawing(): Observable<boolean> {
-    return this.$userIsDrawing;
+    return this.$userIsDrawing.asObservable();
   }
 
   public toggleDrawing(): void {
@@ -47,6 +50,22 @@ export class DrawService {
     this.$userIsDrawing.next(false);
   }
 
+  public getLastDrawing(): GeoJSONGeometry | GeoJSONGeometryCollection | undefined {
+    const geoJson = new GeoJSON()
+
+    let result = undefined;
+
+    this.drawSource.getFeatures().forEach(feature => {
+      const geom: Geometry | undefined  = feature.getGeometry();
+      if (geom !== undefined) {
+        const geomClone = geom.clone();
+        geomClone.transform('EPSG:3857','EPSG:4326')
+        result = geoJson.writeGeometryObject(geomClone);
+      }
+    });
+    return result;
+  }
+
   private undoLastPoint():void {
     if (this.drawingInteraction){
       this.drawingInteraction.removeLastPoint();
@@ -58,7 +77,10 @@ export class DrawService {
 
     const drawing = new VectorLayer({
       source: this.drawSource,
+      visible: true
     });
+
+    drawing.setZIndex(10);
 
     this.map.addLayer(drawing);
 
