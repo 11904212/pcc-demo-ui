@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {ItemInfo} from "../dtos/item-info";
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {DrawService} from "./draw.service";
+import {ItemReq} from "../dtos/item-req";
 
 @Injectable({
   providedIn: 'root'
@@ -56,21 +57,20 @@ export class ItemService {
 
     this.$loading.next(true);
 
-    let params = new HttpParams()
-      .set('collections', this.collections.toString())
-      .set('dateTimeFrom', this.dateTimeFrom.toISOString())
-    if(this.dateTimeTo){
-      params = params.set('dateTimeTo', this.dateTimeTo.toISOString())
+    const body: ItemReq = {
+      aresOfInterest: this.drawService.getLastDrawing(),
+      collections: this.collections,
+      dateTimeFrom: this.dateTimeFrom.toISOString(),
+      limit: 10
     }
 
-    const aresOfInterest = this.drawService.getLastDrawing();
+    if(this.dateTimeTo){
+      body.dateTimeTo = this.dateTimeTo.toISOString();
+    }
 
     this.httpClient.post<ItemInfo[]>(
       this.itemBaseUrl,
-      aresOfInterest,
-      {
-        params: params
-      }
+      body
     ).subscribe({
       next: value => {
         this.items.push(...value);
