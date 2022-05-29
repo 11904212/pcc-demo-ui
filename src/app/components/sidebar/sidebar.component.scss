@@ -2,8 +2,12 @@
 
 .left-bar {
   width: $sideBarSize;
-  background-color: black;
+  background-color: #444444;
   height: 100%;
+}
+
+.button-faded {
+  filter: brightness(50%);
 }
 
 @media (max-width: $mediaBreakpointMobile) {

@@ -112,5 +112,8 @@ export class DrawService {
 
     // prevent multipolygon by clearing the layer on start
     this.drawingInteraction.on("drawstart", () => this.drawSource.clear());
+
+    // end drawing on double click
+    this.drawingInteraction.on("drawend", () => this.endDrawing());
   }
 }
