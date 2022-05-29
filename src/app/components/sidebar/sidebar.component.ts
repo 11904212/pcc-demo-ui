@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {ItemService} from "../../services/item.service";
 import {Observable} from "rxjs";
 import {ItemInfo} from "../../dtos/item-info";
 import {GeoTiffService} from "../../services/geo-tiff.service";
+import {ImageType} from "../../dtos/image-type";
 
 @Component({
   selector: 'app-sidebar',
@@ -11,9 +12,13 @@ import {GeoTiffService} from "../../services/geo-tiff.service";
 })
 export class SidebarComponent {
 
+  readonly imageTypeOptions = ImageType;
+
   $itemList: Observable<ItemInfo[]> = this.itemService.$getItems();
   $error = this.itemService.$getError();
   $itemsLoading = this.itemService.$isLoading();
+
+  selectedImageType = ImageType.TCI;
 
   constructor(
     private itemService: ItemService,
@@ -27,7 +32,7 @@ export class SidebarComponent {
   }
 
   loadImage(item: ItemInfo):void {
-    this.geoTiffService.getGeoTiff(item.id);
+    this.geoTiffService.getGeoTiff(item.id, this.selectedImageType);
   }
 
 }

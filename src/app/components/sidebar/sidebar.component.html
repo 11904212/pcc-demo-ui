@@ -1,9 +1,18 @@
-<p>sidebar works!</p>
+<div class="left-bar">
+  <mat-form-field appearance="outline" color="accent">
+    <mat-label>Select an option</mat-label>
+    <mat-select [(value)]="selectedImageType">
+      <mat-option [value]="imageTypeOptions.TCI">tci</mat-option>
+      <mat-option [value]="imageTypeOptions.NDVI">ndvi</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-divider></mat-divider>
+  <button mat-raised-button color="primary" [disabled]="$itemsLoading | async" (click)="loadItems()">load items</button>
+  <p>{{$error | async}}</p>
 
-<button [disabled]="$itemsLoading | async" (click)="loadItems()">load items</button>
+  <ul *ngFor="let item of $itemList | async">
+    <li (click)="loadImage(item)">{{item.dateTime}}</li>
+  </ul>
+</div>
 
-<ul *ngFor="let item of $itemList | async">
-  <li (click)="loadImage(item)">{{item.dateTime}}</li>
-</ul>
 
-<p>{{$error | async}}</p>

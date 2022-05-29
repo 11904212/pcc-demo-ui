@@ -1,5 +1,4 @@
-$mediaBreakpointMobile: 639px;
-$sideBarSize: 20em;
+@import "src/styles";
 
 main {
   display: flex;
@@ -7,9 +6,7 @@ main {
   height: 100vh;
   flex-grow: 1;
 }
-.left-bar {
-  width: $sideBarSize;
-}
+
 .map-container {
   flex-grow: 1;
 }
@@ -25,9 +22,5 @@ main {
 @media (max-width: $mediaBreakpointMobile) {
   main {
     flex-direction: column;
-  }
-  .left-bar {
-    width: 100%;
-    height: $sideBarSize;
   }
 }

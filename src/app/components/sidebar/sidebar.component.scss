@@ -1,1 +1,15 @@
+@import "src/styles";
+
+.left-bar {
+  width: $sideBarSize;
+  background-color: black;
+  height: 100%;
+}
+
+@media (max-width: $mediaBreakpointMobile) {
+  .left-bar {
+    width: 100%;
+    height: $sideBarSize;
+  }
+}
 
