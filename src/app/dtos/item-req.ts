@@ -3,7 +3,8 @@ import {GeoJSONGeometry, GeoJSONGeometryCollection} from "ol/format/GeoJSON";
 export interface ItemReq {
   collections: string[];
   dateTimeFrom: string;
-  aresOfInterest: GeoJSONGeometry | GeoJSONGeometryCollection;
+  areaOfInterest: GeoJSONGeometry | GeoJSONGeometryCollection;
   dateTimeTo?: string;
   limit?: number;
+  filterCloudy?: boolean;
 }

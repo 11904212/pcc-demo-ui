@@ -58,10 +58,10 @@ export class ItemService {
     this.$loading.next(true);
 
     const body: ItemReq = {
-      aresOfInterest: this.drawService.getLastDrawing(),
+      areaOfInterest: this.drawService.getLastDrawing(),
       collections: this.collections,
       dateTimeFrom: this.dateTimeFrom.toISOString(),
-      limit: 10
+      filterCloudy: true
     }
 
     if(this.dateTimeTo){
@@ -73,7 +73,7 @@ export class ItemService {
       body
     ).subscribe({
       next: value => {
-        this.items.push(...value);
+        this.items = value;
         this.$items.next(this.items);
         this.$error.next("");
         this.$loading.next(false);
