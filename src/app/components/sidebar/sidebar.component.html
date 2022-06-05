@@ -18,13 +18,13 @@
           [ngClass]="($userIsDrawing | async) ? 'button-faded':''"
   >draw ploygon</button>
 
-  <mat-slide-toggle [formControl]="toggleCloudyFilter">filter cloudy images</mat-slide-toggle>
+  <mat-slide-toggle [formControl]="toggleCloudyForm">filter cloudy images</mat-slide-toggle>
 
 
 
   <mat-form-field appearance="outline" color="accent">
     <mat-label>Select an option</mat-label>
-    <mat-select [(value)]="selectedImageType">
+    <mat-select [(value)]="selectedImageType" (selectionChange)="setItemType()">
       <mat-option [value]="imageTypeOptions.TCI">tci</mat-option>
       <mat-option [value]="imageTypeOptions.NDVI">ndvi</mat-option>
     </mat-select>

@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ItemService} from "../../services/item.service";
 import {Observable} from "rxjs";
-import {GeoTiffService} from "../../services/geo-tiff.service";
+import {ImageService} from "../../services/image.service";
 import {ImageType} from "../../models/image-type";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {DrawService} from "../../services/draw.service";
+import {DrawService} from "../../services/map/draw.service";
 import {ItemInfo} from "../../models/item-info";
 
 @Component({
@@ -23,7 +23,7 @@ export class SidebarComponent implements OnInit{
   readonly $userIsDrawing = this.drawService.isDrawing();
 
   selectedImageType = ImageType.TCI;
-  toggleCloudyFilter = new FormControl(true, []);
+  toggleCloudyForm = new FormControl(true, []);
 
   range = new FormGroup({
     start: new FormControl(null, Validators.required),
@@ -34,12 +34,12 @@ export class SidebarComponent implements OnInit{
 
   constructor(
     private itemService: ItemService,
-    private geoTiffService: GeoTiffService,
+    private imageService: ImageService,
     private drawService: DrawService
   ) { }
 
   ngOnInit(): void {
-    this.toggleCloudyFilter.valueChanges.subscribe(value => {
+    this.toggleCloudyForm.valueChanges.subscribe(value => {
       this.itemService.setFilterCloudy(value);
     });
   }
@@ -58,14 +58,16 @@ export class SidebarComponent implements OnInit{
   }
 
   loadImage(item: ItemInfo):void {
-    this.geoTiffService.getGeoTiff(item.id, this.selectedImageType);
+    this.imageService.setImageType(this.selectedImageType);
+    this.imageService.setItemId(item.id);
   }
 
   drawPolygon():void {
     this.drawService.toggleDrawing()
   }
 
-
-
+  setItemType() {
+    this.imageService.setImageType(this.selectedImageType);
+  }
 
 }

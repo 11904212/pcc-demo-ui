@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import {LayerService} from "../../services/layer.service";
+import { Component } from '@angular/core';
+import {LayerService} from "../../services/map/layer.service";
 import {Layer} from "ol/layer";
-import {DrawService} from "../../services/draw.service";
+import {DrawService} from "../../services/map/draw.service";
 
 @Component({
   selector: 'app-layer-switcher',
   templateUrl: './map-menu.component.html',
   styleUrls: ['./map-menu.component.scss']
 })
-export class MapMenuComponent implements OnInit {
+export class MapMenuComponent {
 
   layers = this.layerService.getLayers();
 
@@ -18,9 +18,6 @@ export class MapMenuComponent implements OnInit {
     private layerService: LayerService,
     private drawService: DrawService
   ) { }
-
-  ngOnInit(): void {
-  }
 
   public selectLayer(layer: Layer): void {
     this.layerService.switchLayer(layer);

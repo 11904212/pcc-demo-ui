@@ -1,53 +1,26 @@
 import {Injectable} from '@angular/core';
-import {ImageReq} from "../dtos/image-req";
-import {HttpClient} from "@angular/common/http";
-import {DrawService} from "./draw.service";
 import {MapService} from "./map.service";
-import GeoTIFF, {fromBlob, GeoTIFFImage, TypedArray} from "geotiff";
-import {ImageStatic} from "ol/source";
+import {ImageType} from "../../models/image-type";
 import ImageLayer from "ol/layer/Image";
+import {ImageStatic} from "ol/source";
 import VectorLayer from "ol/layer/Vector";
+import VectorSource from "ol/source/Vector";
 import {Fill, Stroke, Style} from "ol/style";
 import {getVectorContext} from "ol/render";
-import VectorSource from "ol/source/Vector";
-import {ImageType} from "../models/image-type";
+import {DrawService} from "./draw.service";
+import {fromBlob, GeoTIFF, GeoTIFFImage, TypedArray} from "geotiff";
 
 @Injectable({
   providedIn: 'root'
 })
-export class GeoTiffService {
-
-  private imageBaseUrl = "http://localhost:8080/v1/images/geotiff";
+export class GeoTiffService{
 
   constructor(
-    private httpClient: HttpClient,
-    private drawService: DrawService,
-    private mapService: MapService
-  ) { }
-
-  public getGeoTiff(itemId: string, type: ImageType): void {
-
-    const aoi = this.drawService.getLastDrawing();
-
-    const body: ImageReq = {
-      itemId: itemId,
-      imageType: type,
-      areaOfInterest: aoi
-    }
-
-     this.httpClient.post<Blob>(
-       this.imageBaseUrl,
-       body,
-       {
-         responseType: 'blob' as 'json'
-       }
-     ).subscribe({
-       next: value => {
-         this.addGeoTiffLayer(value, type);
-       },
-       error: err => console.log(err)
-     })
+    private mapService: MapService,
+    private drawService: DrawService
+  ) {
   }
+
 
   public async addGeoTiffLayer(geoTiff: Blob, type: ImageType) {
 
@@ -60,6 +33,10 @@ export class GeoTiffService {
 
     this.mapService.getMap().addLayer(geotiffLayer);
     this.mapService.getMap().addLayer(clipLayer);
+  }
+
+  public removeGeoTiffLayer():void {
+
   }
 
   private async clippLayerWithDrawing(geotiffLayer: ImageLayer<ImageStatic>):  Promise<VectorLayer<VectorSource>>{
@@ -202,5 +179,4 @@ export class GeoTiffService {
     return canvas;
 
   }
-
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable} from "rxjs";
 import {ItemInfoDto} from "../dtos/item-info-dto";
 import {HttpClient} from "@angular/common/http";
-import {DrawService} from "./draw.service";
+import {DrawService} from "./map/draw.service";
 import {ItemReq} from "../dtos/item-req";
 import {ItemInfo} from "../models/item-info";
 
