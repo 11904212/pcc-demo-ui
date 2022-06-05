@@ -18,7 +18,7 @@
           [ngClass]="($userIsDrawing | async) ? 'button-faded':''"
   >draw ploygon</button>
 
-  <mat-slide-toggle>filter cloudy images</mat-slide-toggle>
+  <mat-slide-toggle [formControl]="toggleCloudyFilter">filter cloudy images</mat-slide-toggle>
 
 
 

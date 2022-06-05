@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable, Subject} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {ItemInfoDto} from "../dtos/item-info-dto";
 import {HttpClient} from "@angular/common/http";
 import {DrawService} from "./draw.service";
@@ -13,42 +13,43 @@ export class ItemService {
 
   private itemBaseUrl = "http://localhost:8080/v1/items";
 
-  private $loading = new BehaviorSubject<boolean>(false);
-  private $items = new Subject<ItemInfo[]>();
-  private $error = new Subject<string>();
+  private loading$ = new BehaviorSubject<boolean>(false);
+  private items$ = new BehaviorSubject<ItemInfo[]>([]);
+  private error$ = new BehaviorSubject<string>("");
 
-  private collections: string[];
-  private dateTimeFrom: Date;
-  private dateTimeTo: Date;
-  private items: ItemInfo[] = [];
+  private collections: string[] = ['sentinel-2-l2a'];
+  private dateRangeStart: Date;
+  private dateRangeEnd: Date;
+  private filterCloudy: boolean = true;
 
   constructor(
     private httpClient: HttpClient,
     private drawService: DrawService
   ) { }
 
-  public $isLoading(): Observable<boolean> {
-    return this.$loading.asObservable();
+  public isLoading(): Observable<boolean> {
+    return this.loading$.asObservable();
   }
 
-  public $getItems(): Observable<ItemInfo[]> {
-    return this.$items.asObservable();
+  public getItems(): Observable<ItemInfo[]> {
+    return this.items$.asObservable();
   }
 
-  public $getError(): Observable<string> {
-    return this.$error.asObservable();
+  public getError(): Observable<string> {
+    return this.error$.asObservable();
   }
 
   public setCollection(collection: string[]):void {
     this.collections = collection;
   }
 
-  public setDateTimeFrom(date: Date):void {
-    this.dateTimeFrom = date;
+  public setDateRange(start: Date, end: Date):void {
+    this.dateRangeStart = start;
+    this.dateRangeEnd = end;
   }
 
-  public setDateTimeTo(date: Date):void {
-    this.dateTimeTo = date;
+  public setFilterCloudy(filterCloudy: boolean):void {
+    this.filterCloudy = filterCloudy;
   }
 
   public loadItems(): void {
@@ -56,17 +57,14 @@ export class ItemService {
       return;
     }
 
-    this.$loading.next(true);
+    this.loading$.next(true);
 
     const body: ItemReq = {
       areaOfInterest: this.drawService.getLastDrawing(),
       collections: this.collections,
-      dateTimeFrom: this.dateTimeFrom.toISOString(),
-      filterCloudy: true
-    }
-
-    if(this.dateTimeTo){
-      body.dateTimeTo = this.dateTimeTo.toISOString();
+      dateTimeFrom: this.dateRangeStart.toISOString(),
+      dateTimeTo: this.dateRangeEnd.toISOString(),
+      filterCloudy: this.filterCloudy
     }
 
     this.httpClient.post<ItemInfoDto[]>(
@@ -74,15 +72,14 @@ export class ItemService {
       body
     ).subscribe({
       next: value => {
-        this.items = value.map(item => ItemService.mapDtoToModel(item));
-        this.$items.next(this.items);
-        this.$error.next("");
-        this.$loading.next(false);
+        this.items$.next(value.map(item => ItemService.mapDtoToModel(item)));
+        this.error$.next("");
+        this.loading$.next(false);
       },
       error: err => {
-        this.$error.next("could not fetch item from backend");
+        this.error$.next("could not fetch item from backend");
         console.log(err);
-        this.$loading.next(false);
+        this.loading$.next(false);
       }
     });
 
@@ -90,19 +87,24 @@ export class ItemService {
 
   private validateInput(): boolean {
 
-    if (this.collections === undefined || this.collections.length <= 0) {
-      this.$error.next("a collection must be selected");
+    if (!this.collections|| this.collections.length <= 0) {
+      this.error$.next("a collection must be selected");
       return false;
     }
 
-    if (this.dateTimeFrom === undefined ) {
-      this.$error.next("dateTime from is not set");
+    if (!this.dateRangeStart || !this.dateRangeEnd) {
+      this.error$.next("date range is not set");
+      return false;
+    }
+
+    if (this.dateRangeStart > this.dateRangeEnd) {
+      this.error$.next("invalid date range, start can not be after end");
       return false;
     }
 
     const aoi = this.drawService.getLastDrawing();
-    if (aoi === undefined) {
-      this.$error.next("pleas draw an area of interest");
+    if (!aoi) {
+      this.error$.next("pleas draw an area of interest");
       return false;
     }
 

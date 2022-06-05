@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ItemService} from "../../services/item.service";
 import {Observable} from "rxjs";
 import {GeoTiffService} from "../../services/geo-tiff.service";
@@ -12,17 +12,18 @@ import {ItemInfo} from "../../models/item-info";
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit{
 
   readonly imageTypeOptions = ImageType;
   readonly today = new Date();
 
-  readonly $itemList: Observable<ItemInfo[]> = this.itemService.$getItems();
-  readonly $error = this.itemService.$getError();
-  readonly $itemsLoading = this.itemService.$isLoading();
+  readonly $itemList: Observable<ItemInfo[]> = this.itemService.getItems();
+  readonly $error = this.itemService.getError();
+  readonly $itemsLoading = this.itemService.isLoading();
   readonly $userIsDrawing = this.drawService.isDrawing();
 
   selectedImageType = ImageType.TCI;
+  toggleCloudyFilter = new FormControl(true, []);
 
   range = new FormGroup({
     start: new FormControl(null, Validators.required),
@@ -37,15 +38,22 @@ export class SidebarComponent {
     private drawService: DrawService
   ) { }
 
+  ngOnInit(): void {
+    this.toggleCloudyFilter.valueChanges.subscribe(value => {
+      this.itemService.setFilterCloudy(value);
+    });
+  }
+
   loadItems():void {
     this.range.markAllAsTouched();
     if (!this.range.valid) {
       return;
     }
 
-    this.itemService.setCollection(['sentinel-2-l2a']);
-    this.itemService.setDateTimeFrom(this.range.controls['start'].value);
-    this.itemService.setDateTimeTo(this.range.controls['end'].value);
+    this.itemService.setDateRange(
+      this.range.controls['start'].value,
+      this.range.controls['end'].value
+    );
     this.itemService.loadItems();
   }
 
@@ -56,5 +64,8 @@ export class SidebarComponent {
   drawPolygon():void {
     this.drawService.toggleDrawing()
   }
+
+
+
 
 }
