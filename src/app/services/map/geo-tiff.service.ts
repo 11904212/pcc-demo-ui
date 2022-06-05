@@ -4,8 +4,7 @@ import {ImageType} from "../../models/image-type";
 import ImageLayer from "ol/layer/Image";
 import {ImageStatic} from "ol/source";
 import VectorLayer from "ol/layer/Vector";
-import VectorSource from "ol/source/Vector";
-import {Fill, Stroke, Style} from "ol/style";
+import {Fill, Style} from "ol/style";
 import {getVectorContext} from "ol/render";
 import {DrawService} from "./draw.service";
 import {fromBlob, GeoTIFF, GeoTIFFImage, TypedArray} from "geotiff";
@@ -15,10 +14,17 @@ import {fromBlob, GeoTIFF, GeoTIFFImage, TypedArray} from "geotiff";
 })
 export class GeoTiffService{
 
+  private geotiffLayer = new ImageLayer();
+  private clipLayer = new VectorLayer();
+
   constructor(
     private mapService: MapService,
     private drawService: DrawService
   ) {
+    this.initGeoTiffLayer();
+    this.initClipLayer();
+    this.mapService.getMap().addLayer(this.geotiffLayer);
+    this.mapService.getMap().addLayer(this.clipLayer);
   }
 
 
@@ -27,59 +33,49 @@ export class GeoTiffService{
     const tiff: GeoTIFF = await fromBlob(geoTiff);
     const image = await tiff.getImage();
 
-    const geotiffLayer = await this.createGeoTiffLayer(image, type);
+    await this.updateGeoTiffLayer(image, type);
 
-    const clipLayer = await this.clippLayerWithDrawing(geotiffLayer);
+    this.geotiffLayer.setVisible(true);
 
-    this.mapService.getMap().addLayer(geotiffLayer);
-    this.mapService.getMap().addLayer(clipLayer);
   }
 
   public removeGeoTiffLayer():void {
+    this.geotiffLayer.setVisible(false);
 
   }
 
-  private async clippLayerWithDrawing(geotiffLayer: ImageLayer<ImageStatic>):  Promise<VectorLayer<VectorSource>>{
-    // https://openlayers.org/en/latest/examples/layer-clipping-vector.html
+  private initClipLayer() {
+    // based on https://openlayers.org/en/latest/examples/layer-clipping-vector.html
 
-    const vectorSource = this.drawService.getDrawingVectorSource();
+    const userDrawing = this.drawService.getDrawingVectorSource();
 
-    const clipLayer = new VectorLayer({
-      style: new Style({
-        stroke: new Stroke({
-          color: 'red',
-          width: 2
-        })
-      }),
-      source: vectorSource
-    });
+    this.clipLayer.setSource(userDrawing);
 
 
     //Giving the clipped layer an extent is necessary to avoid rendering when the feature is outside the viewport
-    vectorSource.on('addfeature', function () {
-      geotiffLayer.setExtent(vectorSource.getExtent());
+    userDrawing.on('addfeature', () => {
+      this.geotiffLayer.setExtent(userDrawing.getExtent());
     });
 
-    const style = new Style({
+    const featureStyle = new Style({
       fill: new Fill({
         color: 'black',
       }),
     });
 
 
-    geotiffLayer.on('postrender', (e: any) => {
+    this.geotiffLayer.on('postrender', (e: any) => {
       const vectorContext = getVectorContext(e);
       e.context.globalCompositeOperation = 'destination-in';
-      vectorSource.forEachFeature(function (feature) {
-        vectorContext.drawFeature(feature, style);
+      userDrawing.forEachFeature(function (feature) {
+        vectorContext.drawFeature(feature, featureStyle);
       });
       e.context.globalCompositeOperation = 'source-over';
     });
 
-    return clipLayer;
   }
 
-  private async createGeoTiffLayer(image: GeoTIFFImage, type: ImageType): Promise<ImageLayer<ImageStatic>> {
+  private async updateGeoTiffLayer(image: GeoTIFFImage, type: ImageType) {
 
     let canvas;
     if (type == ImageType.NDVI) {
@@ -98,14 +94,13 @@ export class GeoTiffService{
       imageSmoothing: false
     })
 
-    const geotiffLayer = new ImageLayer({
-      source: imgSource,
-      visible: true
-    });
+    this.geotiffLayer.setSource(imgSource);
 
-    geotiffLayer.setZIndex(101);
+  }
 
-    return geotiffLayer;
+  private initGeoTiffLayer() {
+    this.geotiffLayer.setZIndex(101);
+    this.geotiffLayer.setVisible(false);
   }
 
   private async createCanvasRGB(image: GeoTIFFImage): Promise<HTMLCanvasElement> {
