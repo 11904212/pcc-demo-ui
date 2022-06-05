@@ -53,7 +53,9 @@ export class ItemService {
   }
 
   public loadItems(): void {
-    if (!this.validateInput()) {
+    const aoi = this.drawService.getLastDrawing();
+
+    if (!this.validateInput() || !aoi) {
       return;
     }
 
@@ -115,9 +117,8 @@ export class ItemService {
   private static mapDtoToModel(dto: ItemInfoDto): ItemInfo {
     const date = new Date(dto.dateTime);
     return  {
-      dateTime: date,
-      id: dto.id,
-      collectionId: dto.collectionId
+      ...dto,
+      dateTime: date
     };
   }
 
