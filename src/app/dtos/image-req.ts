@@ -1,5 +1,5 @@
 import {GeoJSONGeometry, GeoJSONGeometryCollection} from "ol/format/GeoJSON";
-import {ImageType} from "./image-type";
+import {ImageType} from "../models/image-type";
 
 export interface ImageReq {
   areaOfInterest: GeoJSONGeometry | GeoJSONGeometryCollection;

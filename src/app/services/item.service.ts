@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable, Subject} from "rxjs";
-import {ItemInfo} from "../dtos/item-info";
+import {ItemInfoDto} from "../dtos/item-info-dto";
 import {HttpClient} from "@angular/common/http";
 import {DrawService} from "./draw.service";
 import {ItemReq} from "../dtos/item-req";
+import {ItemInfo} from "../models/item-info";
 
 @Injectable({
   providedIn: 'root'
@@ -68,12 +69,12 @@ export class ItemService {
       body.dateTimeTo = this.dateTimeTo.toISOString();
     }
 
-    this.httpClient.post<ItemInfo[]>(
+    this.httpClient.post<ItemInfoDto[]>(
       this.itemBaseUrl,
       body
     ).subscribe({
       next: value => {
-        this.items = value;
+        this.items = value.map(item => ItemService.mapDtoToModel(item));
         this.$items.next(this.items);
         this.$error.next("");
         this.$loading.next(false);
@@ -108,5 +109,15 @@ export class ItemService {
     return true;
 
   }
+
+  private static mapDtoToModel(dto: ItemInfoDto): ItemInfo {
+    const date = new Date(dto.dateTime);
+    return  {
+      dateTime: date,
+      id: dto.id,
+      collectionId: dto.collectionId
+    };
+  }
+
 
 }

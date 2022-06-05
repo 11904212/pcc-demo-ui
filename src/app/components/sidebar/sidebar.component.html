@@ -34,7 +34,7 @@
   <mat-error>{{$error | async}}</mat-error>
 
   <mat-list *ngFor="let item of $itemList | async">
-    <mat-list-item (click)="loadImage(item)">{{item.dateTime}}</mat-list-item>
+    <mat-list-item (click)="loadImage(item)">{{item.dateTime | date:"yyyy-MM-dd HH:mm"}}</mat-list-item>
   </mat-list>
 
 </div>

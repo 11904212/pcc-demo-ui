@@ -1,5 +1,5 @@
 
-export interface ItemInfo {
+export interface ItemInfoDto {
   id: string;
   dateTime: string;
   collectionId: string;

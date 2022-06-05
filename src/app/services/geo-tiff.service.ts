@@ -10,7 +10,7 @@ import VectorLayer from "ol/layer/Vector";
 import {Fill, Stroke, Style} from "ol/style";
 import {getVectorContext} from "ol/render";
 import VectorSource from "ol/source/Vector";
-import {ImageType} from "../dtos/image-type";
+import {ImageType} from "../models/image-type";
 
 @Injectable({
   providedIn: 'root'

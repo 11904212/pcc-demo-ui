@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
 import {ItemService} from "../../services/item.service";
 import {Observable} from "rxjs";
-import {ItemInfo} from "../../dtos/item-info";
 import {GeoTiffService} from "../../services/geo-tiff.service";
-import {ImageType} from "../../dtos/image-type";
+import {ImageType} from "../../models/image-type";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {DrawService} from "../../services/draw.service";
+import {ItemInfo} from "../../models/item-info";
 
 @Component({
   selector: 'app-sidebar',
