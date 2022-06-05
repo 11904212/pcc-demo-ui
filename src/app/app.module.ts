@@ -20,13 +20,15 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatListModule} from "@angular/material/list";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import { ItemListComponent } from './components/item-list/item-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
     SidebarComponent,
-    MapMenuComponent
+    MapMenuComponent,
+    ItemListComponent
   ],
   imports: [
     BrowserModule,

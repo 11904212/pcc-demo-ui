@@ -1,11 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ItemService} from "../../services/item.service";
-import {Observable} from "rxjs";
 import {ImageService} from "../../services/image.service";
 import {ImageType} from "../../models/image-type";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {DrawService} from "../../services/map/draw.service";
-import {ItemInfo} from "../../models/item-info";
 
 @Component({
   selector: 'app-sidebar',
@@ -17,7 +15,7 @@ export class SidebarComponent implements OnInit{
   readonly imageTypeOptions = ImageType;
   readonly today = new Date();
 
-  readonly $itemList: Observable<ItemInfo[]> = this.itemService.getItems();
+
   readonly $error = this.itemService.getError();
   readonly $itemsLoading = this.itemService.isLoading();
   readonly $userIsDrawing = this.drawService.isDrawing();
@@ -55,11 +53,6 @@ export class SidebarComponent implements OnInit{
       this.range.controls['end'].value
     );
     this.itemService.loadItems();
-  }
-
-  loadImage(item: ItemInfo):void {
-    this.imageService.setImageType(this.selectedImageType);
-    this.imageService.setItemId(item.id);
   }
 
   drawPolygon():void {
