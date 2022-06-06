@@ -21,6 +21,8 @@ import {MatListModule} from "@angular/material/list";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { ItemListComponent } from './components/item-list/item-list.component';
+import { NgChartsModule } from 'ng2-charts';
+import { StatisticsChartComponent } from './components/statistics-chart/statistics-chart.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { ItemListComponent } from './components/item-list/item-list.component';
     MapComponent,
     SidebarComponent,
     MapMenuComponent,
-    ItemListComponent
+    ItemListComponent,
+    StatisticsChartComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,8 @@ import { ItemListComponent } from './components/item-list/item-list.component';
     MatListModule,
     MatButtonToggleModule,
     MatSlideToggleModule,
-    FormsModule
+    FormsModule,
+    NgChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

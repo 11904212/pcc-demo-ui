@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {Stats} from "../models/stats";
 import {ItemInfo} from "../models/item-info";
 import {StatsReq} from "../dtos/stats-req";
@@ -28,6 +28,10 @@ export class StatisticsService {
   public setItems(items: ItemInfo[]) {
     this.items = items;
     this.loadStats();
+  }
+
+  public getStatistics(): Observable<Stats[]> {
+    return this.stats$.asObservable();
   }
 
   private loadStats() {

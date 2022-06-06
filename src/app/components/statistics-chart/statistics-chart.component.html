@@ -1,0 +1,8 @@
+<div class="stats-chart">
+  <button (click)="loadStats()">load</button>
+  <canvas baseChart height="200"
+          [data]="lineChartData"
+          [type]="'line'"
+          [options]="chartOptions">
+  </canvas>
+</div>
