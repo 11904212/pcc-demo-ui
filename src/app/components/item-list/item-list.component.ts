@@ -12,6 +12,9 @@ import {ImageService} from "../../services/image.service";
 export class ItemListComponent {
 
   readonly $itemList: Observable<ItemInfo[]> = this.itemService.getItems();
+  readonly imageSelectedItemId$ = this.imageService.getSelectedItemId();
+  readonly imageError$ = this.imageService.getError();
+  readonly imageIsLoading = this.imageService.isLoading();
 
   constructor(
     private itemService: ItemService,
@@ -20,6 +23,10 @@ export class ItemListComponent {
 
   loadImage(item: ItemInfo):void {
     this.imageService.setItemId(item.id);
+  }
+
+  removeImage():void {
+    this.imageService.removeLoadedImage();
   }
 
 }

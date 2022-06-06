@@ -1,5 +1,32 @@
 <div>
   <mat-list *ngFor="let item of $itemList | async">
-    <mat-list-item (click)="loadImage(item)">{{item.dateTime | date:"yyyy-MM-dd HH:mm":"UTC":"en_US"}}</mat-list-item>
+    <mat-list-item>
+      <div class="itemEntry">
+        <mat-checkbox class="checkbox"></mat-checkbox>
+        {{item.dateTime | date:"yyyy-MM-dd HH:mm":"UTC":"en_US"}}
+        <ng-container *ngIf="(imageSelectedItemId$ | async) === item.id; else unselectedItem">
+          <ng-container *ngIf="!(imageIsLoading | async); else loadingItem">
+            <ng-container *ngIf="!(imageError$ | async); then loadedItem; else failedItem"></ng-container>
+          </ng-container>
+        </ng-container>
+        <ng-template #loadingItem>
+          <button mat-mini-fab color="primary" disabled><mat-icon>hourglass_bottom</mat-icon></button>
+        </ng-template>
+        <ng-template #failedItem>
+          <button mat-mini-fab color="warn" disabled><mat-icon>error_outline</mat-icon></button>
+        </ng-template>
+        <ng-template #loadedItem>
+          <button mat-mini-fab color="primary" (click)="removeImage()"><mat-icon>visibility_off</mat-icon></button>
+        </ng-template>
+        <ng-template #unselectedItem>
+          <button mat-mini-fab (click)="loadImage(item)"><mat-icon>visibility</mat-icon></button>
+        </ng-template>
+      </div>
+    </mat-list-item>
   </mat-list>
+
+  <mat-error>{{imageError$ | async}}</mat-error>
+
 </div>
+
+

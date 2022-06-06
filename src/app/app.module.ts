@@ -23,6 +23,8 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { ItemListComponent } from './components/item-list/item-list.component';
 import { NgChartsModule } from 'ng2-charts';
 import { StatisticsChartComponent } from './components/statistics-chart/statistics-chart.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import { StatisticsChartComponent } from './components/statistics-chart/statisti
     MatButtonToggleModule,
     MatSlideToggleModule,
     FormsModule,
-    NgChartsModule
+    NgChartsModule,
+    MatCheckboxModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
