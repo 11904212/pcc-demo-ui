@@ -2,8 +2,6 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ChartData, ChartOptions} from "chart.js";
 import {StatisticsService} from "../../services/statistics.service";
 import {Stats} from "../../models/stats";
-import {ItemService} from "../../services/item.service";
-import {take} from "rxjs";
 import {BaseChartDirective} from "ng2-charts";
 import {formatDate} from "@angular/common";
 
@@ -51,18 +49,13 @@ export class StatisticsChartComponent implements OnInit {
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   constructor(
-    private statisticsService: StatisticsService,
-    private itemService: ItemService
+    private statisticsService: StatisticsService
   ) { }
 
   ngOnInit(): void {
     this.statisticsService.getStatistics().subscribe(
       stats => this.updateChart(stats)
     )
-  }
-
-  loadStats() {
-    this.itemService.getItems().pipe(take(1)).subscribe(items => this.statisticsService.setItems(items));
   }
 
   private updateChart(stats: Stats[]){
