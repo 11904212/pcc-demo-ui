@@ -35,6 +35,14 @@ export class StatisticsService {
     return this.stats$.asObservable();
   }
 
+  public getLoading(): Observable<boolean> {
+    return this.loading$.asObservable();
+  }
+
+  public getError(): Observable<string> {
+    return this.error$.asObservable();
+  }
+
   private loadStats() {
 
     const aoi = this.drawService.getLastDrawing();

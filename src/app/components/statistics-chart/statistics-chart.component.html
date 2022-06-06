@@ -1,7 +1,14 @@
 <div class="stats-chart">
+  <mat-progress-bar
+    *ngIf="(statsIsLoading$ | async)"
+    color="accent"
+    mode="indeterminate">
+  </mat-progress-bar>
   <canvas baseChart height="200"
           [data]="lineChartData"
           [type]="'line'"
           [options]="chartOptions">
   </canvas>
+  <mat-error>{{statsError$ | async}}</mat-error>
 </div>
+

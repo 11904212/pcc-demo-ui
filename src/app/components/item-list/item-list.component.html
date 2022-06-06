@@ -1,8 +1,19 @@
 <div>
+  <div class="typeSelection">
+    <ng-container *ngIf="(itemList$ | async)?.length">
+      <mat-form-field appearance="outline" color="accent">
+        <mat-label>Select an option</mat-label>
+        <mat-select [(value)]="selectedImageType" (selectionChange)="setItemType()">
+          <mat-option [value]="imageTypeOptions.TCI">tci</mat-option>
+          <mat-option [value]="imageTypeOptions.NDVI">ndvi</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+  </div>
 
-  <mat-list *ngFor="let item of itemList$ | async">
-    <mat-list-item>
-      <div class="itemEntry">
+  <div class="listDiv">
+    <cdk-virtual-scroll-viewport appendOnly itemSize="50" class="itemList">
+      <div *cdkVirtualFor="let item of itemList$ | async" class="itemEntry">
         <mat-checkbox class="checkbox" (change)="updateSelectedStats($event, item)" ></mat-checkbox>
         {{item.dateTime | date:"yyyy-MM-dd HH:mm":"UTC":"en_US"}}
         <ng-container *ngIf="(imageSelectedItemId$ | async) === item.id; else unselectedItem">
@@ -14,8 +25,9 @@
           <button mat-mini-fab (click)="loadImage(item)"><mat-icon>visibility</mat-icon></button>
         </ng-template>
       </div>
-    </mat-list-item>
-  </mat-list>
+    </cdk-virtual-scroll-viewport>
+
+  </div>
 
   <mat-error>{{imageError$ | async}}</mat-error>
 

@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {ItemService} from "../../services/item.service";
-import {ImageService} from "../../services/image.service";
-import {ImageType} from "../../models/image-type";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {DrawService} from "../../services/map/draw.service";
 import {environment} from "../../../environments/environment";
@@ -13,7 +11,6 @@ import {environment} from "../../../environments/environment";
 })
 export class SidebarComponent implements OnInit{
 
-  readonly imageTypeOptions = ImageType;
   readonly today = new Date();
   private defaultStart = new Date(this.today.valueOf() - (environment.defaultDateRange * 24 * 60 * 60 *1000));
 
@@ -21,7 +18,6 @@ export class SidebarComponent implements OnInit{
   readonly $itemsLoading = this.itemService.isLoading();
   readonly $userIsDrawing = this.drawService.isDrawing();
 
-  selectedImageType = ImageType.TCI;
   toggleCloudyForm = new FormControl(true, []);
 
   range = new FormGroup({
@@ -33,7 +29,6 @@ export class SidebarComponent implements OnInit{
 
   constructor(
     private itemService: ItemService,
-    private imageService: ImageService,
     private drawService: DrawService
   ) { }
 
@@ -63,10 +58,6 @@ export class SidebarComponent implements OnInit{
 
   drawPolygon():void {
     this.drawService.toggleDrawing()
-  }
-
-  setItemType() {
-    this.imageService.setImageType(this.selectedImageType);
   }
 
 }

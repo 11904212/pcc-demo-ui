@@ -4,6 +4,23 @@
   width: $sideBarSize;
   background-color: #444444;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.userInput{
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+}
+
+.userInput > * {
+  margin: 0.5rem;
+}
+
+.itemList {
+  height: 100%;
 }
 
 .button-faded {

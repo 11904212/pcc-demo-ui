@@ -41,10 +41,13 @@ export class StatisticsChartComponent implements OnInit {
     plugins: {
       title: {
         display: true,
-        text: 'NDVI',
+        text: 'NDVI Statistics',
       },
     },
   };
+
+  readonly statsIsLoading$ = this.statisticsService.getLoading();
+  readonly statsError$ = this.statisticsService.getError();
 
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 

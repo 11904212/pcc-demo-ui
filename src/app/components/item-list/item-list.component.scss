@@ -1,13 +1,26 @@
+
 .checkbox{
   margin-right: 1rem;
 }
 
+.typeSelection {
+  text-align: center;
+}
+
+.listDiv {
+}
+
+.itemList {
+  height: 300px;
+  width: 100%;
+}
+
 .itemEntry{
+  height: 50px;
   display: flex;
   align-items: center;
   width: 100%;
   justify-content: space-evenly;
-
 }
 
 .spinner{

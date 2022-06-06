@@ -5,6 +5,7 @@ import {ItemService} from "../../services/item.service";
 import {ImageService} from "../../services/image.service";
 import {MatCheckboxChange} from "@angular/material/checkbox";
 import {StatisticsService} from "../../services/statistics.service";
+import {ImageType} from "../../models/image-type";
 
 @Component({
   selector: 'app-item-list',
@@ -20,7 +21,11 @@ export class ItemListComponent implements OnInit, OnDestroy{
   readonly imageError$ = this.imageService.getError();
   readonly imageIsLoading = this.imageService.isLoading();
 
+  readonly imageTypeOptions = ImageType;
+
   private selectedStatsItems = new BehaviorSubject<Set<ItemInfo>>(new Set())
+
+  selectedImageType = ImageType.TCI;
 
   constructor(
     private itemService: ItemService,
@@ -59,6 +64,11 @@ export class ItemListComponent implements OnInit, OnDestroy{
       set.delete(item);
     }
     this.selectedStatsItems.next(set);
+  }
+
+
+  setItemType() {
+    this.imageService.setImageType(this.selectedImageType);
   }
 
 

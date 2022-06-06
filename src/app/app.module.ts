@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MapComponent } from './components/map/map.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { MapMenuComponent } from './components/map-menu/map-menu.component';
@@ -24,7 +23,8 @@ import { ItemListComponent } from './components/item-list/item-list.component';
 import { NgChartsModule } from 'ng2-charts';
 import { StatisticsChartComponent } from './components/statistics-chart/statistics-chart.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {ScrollingModule} from "@angular/cdk/scrolling";
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -35,28 +35,28 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     ItemListComponent,
     StatisticsChartComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    NoopAnimationsModule,
-    MatIconModule,
-    MatMenuModule,
-    MatButtonModule,
-    HttpClientModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatDividerModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    ReactiveFormsModule,
-    MatListModule,
-    MatButtonToggleModule,
-    MatSlideToggleModule,
-    FormsModule,
-    NgChartsModule,
-    MatCheckboxModule,
-    MatProgressSpinnerModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        MatIconModule,
+        MatMenuModule,
+        MatButtonModule,
+        HttpClientModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatDividerModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        ReactiveFormsModule,
+        MatListModule,
+        MatButtonToggleModule,
+        MatSlideToggleModule,
+        FormsModule,
+        NgChartsModule,
+        MatCheckboxModule,
+        ScrollingModule,
+        MatProgressBarModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
