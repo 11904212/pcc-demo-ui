@@ -8,6 +8,7 @@ import {Fill, Style} from "ol/style";
 import {getVectorContext} from "ol/render";
 import {DrawService} from "./draw.service";
 import {fromBlob, GeoTIFF, GeoTIFFImage, TypedArray} from "geotiff";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -165,7 +166,7 @@ export class GeoTiffService{
       width: image.getWidth(),
       height: image.getHeight(),
       domain: [min, max],
-      colorScale: 'magma',
+      colorScale: environment.ndviColorScale,
       clampLow: true,
       clampHigh: true
     });

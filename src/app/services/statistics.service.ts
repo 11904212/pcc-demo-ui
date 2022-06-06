@@ -6,13 +6,14 @@ import {StatsReq} from "../dtos/stats-req";
 import {DrawService} from "./map/draw.service";
 import {HttpClient} from "@angular/common/http";
 import {StatsDto} from "../dtos/stats-dto";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class StatisticsService {
 
-  private statisticsBaseUrl = "http://localhost:8080/v1/statistics/ndvi";
+  private statisticsBaseUrl = environment.apiUrl + "/statistics/ndvi";
 
   private stats$ = new BehaviorSubject<Stats[]>([]);
   private loading$ = new BehaviorSubject<boolean>(false);

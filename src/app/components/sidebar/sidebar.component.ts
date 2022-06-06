@@ -4,6 +4,7 @@ import {ImageService} from "../../services/image.service";
 import {ImageType} from "../../models/image-type";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {DrawService} from "../../services/map/draw.service";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-sidebar',
@@ -14,7 +15,7 @@ export class SidebarComponent implements OnInit{
 
   readonly imageTypeOptions = ImageType;
   readonly today = new Date();
-
+  private defaultStart = new Date(this.today.valueOf() - (environment.defaultDateRange * 24 * 60 * 60 *1000));
 
   readonly $error = this.itemService.getError();
   readonly $itemsLoading = this.itemService.isLoading();
@@ -40,6 +41,11 @@ export class SidebarComponent implements OnInit{
     this.toggleCloudyForm.valueChanges.subscribe(value => {
       this.itemService.setFilterCloudy(value);
     });
+
+    this.range.setValue({
+      start: this.defaultStart,
+      end: this.today
+    })
   }
 
   loadItems():void {

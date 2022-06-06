@@ -5,9 +5,11 @@ import {Draw, Modify, Snap} from "ol/interaction";
 import Map from 'ol/Map';
 import VectorLayer from "ol/layer/Vector";
 import {BehaviorSubject, Observable} from "rxjs";
-import {GeoJSON} from "ol/format";
+import {GeoJSON, WKT} from "ol/format";
 import {GeoJSONGeometry, GeoJSONGeometryCollection} from "ol/format/GeoJSON";
 import {Geometry} from "ol/geom";
+import {environment} from "../../../environments/environment";
+import {Feature} from "ol";
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +28,7 @@ export class DrawService {
   ) {
     this.map = this.mapService.getMap();
     this.initDraw();
+    this.loadDefaultPolygon();
   }
 
   public isDrawing(): Observable<boolean> {
@@ -59,7 +62,7 @@ export class DrawService {
       const geom: Geometry | undefined  = feature.getGeometry();
       if (geom !== undefined) {
         const geomClone = geom.clone();
-        geomClone.transform('EPSG:3857','EPSG:4326')
+        geomClone.transform(environment.crsMap,environment.crsApi)
         result = geoJson.writeGeometryObject(geomClone);
       }
     });
@@ -115,5 +118,39 @@ export class DrawService {
 
     // end drawing on double click
     this.drawingInteraction.on("drawend", () => this.endDrawing());
+  }
+
+  private loadDefaultPolygon(){
+    const wkt = environment.defaultPolygon;
+    if (wkt) {
+      const wktReader = new WKT();
+
+      const feature: Feature = wktReader.readFeature(wkt, {
+        dataProjection: environment.crsApi,
+        featureProjection: environment.crsMap,
+      });
+      if (!feature){
+        console.log("could not read default polygon");
+        return;
+      }
+      this.drawSource.addFeature(feature);
+
+      const geometry = feature.getGeometry();
+      if (!geometry) {
+        return;
+      }
+
+      const extend = geometry.getExtent();
+      if (!extend) {
+        return;
+      }
+
+      this.mapService.getMap().getView().fit(
+        extend,
+        {
+          duration: 1000
+        }
+      )
+    }
   }
 }

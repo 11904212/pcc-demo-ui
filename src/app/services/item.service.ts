@@ -5,13 +5,14 @@ import {HttpClient} from "@angular/common/http";
 import {DrawService} from "./map/draw.service";
 import {ItemReq} from "../dtos/item-req";
 import {ItemInfo} from "../models/item-info";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItemService {
 
-  private itemBaseUrl = "http://localhost:8080/v1/items";
+  private itemBaseUrl = environment.apiUrl + "/items";
 
   private loading$ = new BehaviorSubject<boolean>(false);
   private items$ = new BehaviorSubject<ItemInfo[]>([]);

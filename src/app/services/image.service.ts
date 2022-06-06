@@ -4,13 +4,14 @@ import {HttpClient} from "@angular/common/http";
 import {DrawService} from "./map/draw.service";
 import {ImageType} from "../models/image-type";
 import {GeoTiffService} from "./map/geo-tiff.service";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImageService {
 
-  private imageBaseUrl = "http://localhost:8080/v1/images/geotiff";
+  private imageBaseUrl = environment.apiUrl + "/images/geotiff";
   private itemId: string;
   private imageType: ImageType = ImageType.TCI;
 

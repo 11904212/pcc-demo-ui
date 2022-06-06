@@ -5,6 +5,7 @@ import {OSM} from "ol/source";
 import {fromLonLat} from "ol/proj";
 import {Attribution, MousePosition, Rotate, ScaleLine, Zoom, ZoomSlider} from "ol/control";
 import {createStringXY} from "ol/coordinate";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +41,7 @@ export class MapService {
         new ScaleLine(),
         new ZoomSlider(),
         new MousePosition({
-          projection: 'EPSG:4326',
+          projection: environment.crsApi,
           coordinateFormat: createStringXY(5)
         })
       ]
