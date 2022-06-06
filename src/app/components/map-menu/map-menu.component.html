@@ -1,6 +1,6 @@
 <div class="button-stack">
   <button mat-fab
-          color="primary"
+          color="accent"
           class="map-menu-button"
           [ngClass]="($userIsDrawing | async) ? 'map-menu-button-faded':''"
           aria-label="button for start and stop drawing"
@@ -9,6 +9,7 @@
   </button>
 
   <button mat-fab
+          color="primary"
           class="map-menu-button"
           [matMenuTriggerFor]="menu"
           aria-label="button for switching between map layers">

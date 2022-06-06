@@ -20,7 +20,7 @@
             [ngClass]="($userIsDrawing | async) ? 'button-faded':''"
     ><mat-icon>draw</mat-icon> draw ploygon</button>
 
-    <mat-slide-toggle [formControl]="toggleCloudyForm">filter cloudy images</mat-slide-toggle>
+    <mat-slide-toggle color="primary" [formControl]="toggleCloudyForm">filter cloudy images</mat-slide-toggle>
 
     <button mat-raised-button color="primary" [disabled]="$itemsLoading | async" (click)="loadItems()"
     ><mat-icon>refresh</mat-icon> load items</button>
