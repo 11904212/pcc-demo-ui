@@ -25,6 +25,7 @@ import { StatisticsChartComponent } from './components/statistics-chart/statisti
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {ScrollingModule} from "@angular/cdk/scrolling";
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     imports: [
         BrowserModule,
         AppRoutingModule,
+        BrowserAnimationsModule,
         MatIconModule,
         MatMenuModule,
         MatButtonModule,
