@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, filter, Observable} from "rxjs";
 import {ItemInfoDto} from "../dtos/item-info-dto";
 import {HttpClient} from "@angular/common/http";
 import {DrawService} from "./map/draw.service";
@@ -26,7 +26,11 @@ export class ItemService {
   constructor(
     private httpClient: HttpClient,
     private drawService: DrawService
-  ) { }
+  ) {
+    this.drawService.isDrawing().pipe(
+      filter(isDrawing => isDrawing)
+    ).subscribe(() => this.resetState());
+  }
 
   public isLoading(): Observable<boolean> {
     return this.loading$.asObservable();
@@ -85,7 +89,12 @@ export class ItemService {
         this.loading$.next(false);
       }
     });
+  }
 
+  private resetState():void {
+    this.items$.next([]);
+    this.error$.next("");
+    this.loading$.next(false);
   }
 
   private validateInput(): boolean {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, filter, Observable} from "rxjs";
 import {Stats} from "../models/stats";
 import {ItemInfo} from "../models/item-info";
 import {StatsReq} from "../dtos/stats-req";
@@ -24,7 +24,11 @@ export class StatisticsService {
   constructor(
     private httpClient: HttpClient,
     private drawService: DrawService
-  ) { }
+  ) {
+    this.drawService.isDrawing().pipe(
+      filter(isDrawing => isDrawing)
+    ).subscribe(() => this.resetState());
+  }
 
   public setItems(items: ItemInfo[]) {
     this.items = items;
@@ -41,6 +45,12 @@ export class StatisticsService {
 
   public getError(): Observable<string> {
     return this.error$.asObservable();
+  }
+
+  private resetState() {
+    this.stats$.next([]);
+    this.loading$.next(false);
+    this.error$.next("");
   }
 
   private loadStats() {

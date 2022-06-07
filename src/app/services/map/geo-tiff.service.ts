@@ -9,6 +9,7 @@ import {getVectorContext} from "ol/render";
 import {DrawService} from "./draw.service";
 import {fromBlob, GeoTIFF, GeoTIFFImage, TypedArray} from "geotiff";
 import {environment} from "../../../environments/environment";
+import {filter} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,10 @@ export class GeoTiffService{
     this.initClipLayer();
     this.mapService.getMap().addLayer(this.geotiffLayer);
     this.mapService.getMap().addLayer(this.clipLayer);
+
+    this.drawService.isDrawing().pipe(
+      filter(isDrawing => isDrawing)
+    ).subscribe(() => this.removeGeoTiffLayer());
   }
 
 

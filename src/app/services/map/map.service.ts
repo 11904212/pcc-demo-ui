@@ -3,7 +3,7 @@ import {View, Map} from "ol";
 import TileLayer from "ol/layer/Tile";
 import {OSM} from "ol/source";
 import {fromLonLat} from "ol/proj";
-import {Attribution, MousePosition, Rotate, ScaleLine, Zoom, ZoomSlider} from "ol/control";
+import {Attribution, MousePosition, Rotate, ScaleLine, Zoom} from "ol/control";
 import {createStringXY} from "ol/coordinate";
 import {environment} from "../../../environments/environment";
 
@@ -39,7 +39,6 @@ export class MapService {
         new Rotate(),
         new Attribution(),
         new ScaleLine(),
-        new ZoomSlider(),
         new MousePosition({
           projection: environment.crsApi,
           coordinateFormat: createStringXY(5)

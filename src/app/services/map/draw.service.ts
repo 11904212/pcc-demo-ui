@@ -18,7 +18,9 @@ export class DrawService {
 
   private map: Map;
   private drawSource: VectorSource;
-  private drawingInteraction: Draw;
+  private interactionDraw: Draw;
+  private interactionSnap: Snap;
+  private interactionModify: Modify;
 
   private $userIsDrawing = new BehaviorSubject<boolean>(false);
 
@@ -44,12 +46,12 @@ export class DrawService {
   }
 
   public startDrawing(): void {
-    this.map.addInteraction(this.drawingInteraction);
+    this.addInteractions();
     this.$userIsDrawing.next(true);
   }
 
   public endDrawing(): void {
-    this.map.removeInteraction(this.drawingInteraction);
+    this.removeInteractions();
     this.$userIsDrawing.next(false);
   }
 
@@ -73,10 +75,21 @@ export class DrawService {
     return this.drawSource;
   }
 
+  private addInteractions():void {
+    this.map.addInteraction(this.interactionDraw);
+    this.map.addInteraction(this.interactionSnap);
+    this.map.addInteraction(this.interactionModify);
+  }
+
+  private removeInteractions():void {
+    this.map.removeInteraction(this.interactionDraw);
+    this.map.removeInteraction(this.interactionSnap);
+    this.map.removeInteraction(this.interactionModify);
+  }
 
   private undoLastPoint():void {
-    if (this.drawingInteraction){
-      this.drawingInteraction.removeLastPoint();
+    if (this.interactionDraw){
+      this.interactionDraw.removeLastPoint();
     }
   }
 
@@ -92,15 +105,13 @@ export class DrawService {
 
     this.map.addLayer(drawing);
 
-    const snap = new Snap({
+    this.interactionSnap = new Snap({
       source: this.drawSource
     });
-    this.map.addInteraction(snap);
 
-    const modify = new Modify({source: this.drawSource});
-    this.map.addInteraction(modify);
+    this.interactionModify= new Modify({source: this.drawSource});
 
-    this.drawingInteraction = new Draw({
+    this.interactionDraw = new Draw({
       source: this.drawSource,
       type: "Polygon",
       condition: e => {
@@ -114,10 +125,10 @@ export class DrawService {
     });
 
     // prevent multipolygon by clearing the layer on start
-    this.drawingInteraction.on("drawstart", () => this.drawSource.clear());
+    this.interactionDraw.on("drawstart", () => this.drawSource.clear());
 
     // end drawing on double click
-    this.drawingInteraction.on("drawend", () => this.endDrawing());
+    this.interactionDraw.on("drawend", () => this.endDrawing());
   }
 
   private loadDefaultPolygon(){

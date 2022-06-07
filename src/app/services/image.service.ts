@@ -5,7 +5,7 @@ import {DrawService} from "./map/draw.service";
 import {ImageType} from "../models/image-type";
 import {GeoTiffService} from "./map/geo-tiff.service";
 import {environment} from "../../environments/environment";
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, filter, Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,11 @@ export class ImageService {
     private httpClient: HttpClient,
     private drawService: DrawService,
     private geoTiffService: GeoTiffService
-  ) { }
+  ) {
+    this.drawService.isDrawing().pipe(
+      filter(isDrawing => isDrawing)
+    ).subscribe(() => this.resetState());
+  }
 
   public getImageType(): ImageType {
     return this.imageType;
@@ -54,6 +58,12 @@ export class ImageService {
   public removeLoadedImage() {
     this.geoTiffService.removeGeoTiffLayer();
     this.selectedItemId$.next("");
+  }
+
+  private resetState(): void {
+    this.selectedItemId$.next("");
+    this.loading$.next(false);
+    this.error$.next("");
   }
 
   private fetchImage(): void {
