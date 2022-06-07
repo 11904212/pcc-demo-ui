@@ -84,8 +84,12 @@ export class ItemService {
         this.loading$.next(false);
       },
       error: err => {
-        this.error$.next("could not fetch item from backend");
         console.log(err);
+        if (err.status === 404) {
+          this.error$.next("could not find item in date range");
+        } else {
+          this.error$.next("could not fetch item from backend");
+        }
         this.loading$.next(false);
       }
     });
