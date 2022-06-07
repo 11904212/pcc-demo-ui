@@ -12,7 +12,7 @@ import {environment} from "../../../environments/environment";
 export class SidebarComponent implements OnInit{
 
   readonly today = new Date();
-  private defaultStart = new Date(this.today.valueOf() - (environment.defaultDateRange * 24 * 60 * 60 *1000));
+  readonly defaultStart = new Date(this.today.valueOf() - (environment.defaultDateRange * 24 * 60 * 60 *1000));
 
   readonly $error = this.itemService.getError();
   readonly $itemsLoading = this.itemService.isLoading();

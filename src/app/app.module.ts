@@ -14,7 +14,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatDatepickerModule} from "@angular/material/datepicker";
-import {MatNativeDateModule} from "@angular/material/core";
+import {MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatListModule} from "@angular/material/list";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
@@ -59,7 +59,9 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
         ScrollingModule,
         MatProgressBarModule
     ],
-  providers: [],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
