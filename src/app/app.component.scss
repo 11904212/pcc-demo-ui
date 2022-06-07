@@ -19,6 +19,10 @@ main {
 
 }
 
+.sidebar {
+  z-index: 10;
+}
+
 @media (max-width: $mediaBreakpointMobile) {
   main {
     flex-direction: column;
