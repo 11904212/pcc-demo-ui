@@ -55,7 +55,7 @@ export class StatisticsChartComponent implements OnInit {
 
   constructor(
     private statisticsService: StatisticsService,
-    private imageService: ImageService,
+    private imageService: ImageService
   ) { }
 
   ngOnInit(): void {
@@ -76,12 +76,8 @@ export class StatisticsChartComponent implements OnInit {
   }
 
   private updateChart(stats: Stats[]){
+    this.resetChart();
     const sortedStats = [...stats];
-    this.itemIds.length = 0;
-    this.labels.length = 0;
-    this.dataAvg.length = 0;
-    this.dataMin.length = 0;
-    this.dataMax.length = 0;
     sortedStats.sort((a,b) => {
       return a.dateTime < b.dateTime ? -1: 1
     });
@@ -97,6 +93,14 @@ export class StatisticsChartComponent implements OnInit {
     );
 
     this.chart?.update();
+  }
+
+  private resetChart():void {
+    this.itemIds.length = 0;
+    this.labels.length = 0;
+    this.dataAvg.length = 0;
+    this.dataMin.length = 0;
+    this.dataMax.length = 0;
   }
 
 }

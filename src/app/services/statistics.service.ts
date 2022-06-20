@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, filter, Observable} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {Stats} from "../models/stats";
 import {ItemInfo} from "../models/item-info";
 import {StatsReq} from "../dtos/stats-req";
@@ -7,6 +7,7 @@ import {DrawService} from "./map/draw.service";
 import {HttpClient} from "@angular/common/http";
 import {StatsDto} from "../dtos/stats-dto";
 import {environment} from "../../environments/environment";
+import {ItemService} from "./item.service";
 
 @Injectable({
   providedIn: 'root'
@@ -23,11 +24,12 @@ export class StatisticsService {
 
   constructor(
     private httpClient: HttpClient,
-    private drawService: DrawService
+    private drawService: DrawService,
+    private itemService: ItemService
   ) {
-    this.drawService.isDrawing().pipe(
-      filter(isDrawing => isDrawing)
-    ).subscribe(() => this.resetState());
+    this.itemService.getItems().subscribe(
+      () => this.resetState()
+    );
   }
 
   public setItems(items: ItemInfo[]) {
