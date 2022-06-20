@@ -3,6 +3,7 @@ import {ItemService} from "../../services/item.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {DrawService} from "../../services/map/draw.service";
 import {environment} from "../../../environments/environment";
+import {combineLatest, debounceTime, filter, map, tap} from "rxjs";
 
 @Component({
   selector: 'app-sidebar',
@@ -17,6 +18,10 @@ export class SidebarComponent implements OnInit{
   readonly $error = this.itemService.getError();
   readonly $itemsLoading = this.itemService.isLoading();
   readonly $userIsDrawing = this.drawService.isDrawing();
+
+  readonly $lockInput = combineLatest([this.$itemsLoading, this.$userIsDrawing]).pipe(
+    map(([lodaing, drawing]) => lodaing || drawing)
+  );
 
   toggleCloudyForm = new FormControl(true, []);
 
@@ -41,18 +46,25 @@ export class SidebarComponent implements OnInit{
       start: this.defaultStart,
       end: this.today
     })
+
+    this.itemService.setDateRange(
+      this.defaultStart,
+      this.today
+    );
+
+    this.range.valueChanges.pipe(
+      debounceTime(100),
+      tap(() => this.range.markAllAsTouched()),
+      filter(() => this.range.valid)
+    ).subscribe(value => {
+      this.itemService.setDateRange(
+        value.start,
+        value.end
+      );
+    });
   }
 
   loadItems():void {
-    this.range.markAllAsTouched();
-    if (!this.range.valid) {
-      return;
-    }
-
-    this.itemService.setDateRange(
-      this.range.controls['start'].value,
-      this.range.controls['end'].value
-    );
     this.itemService.loadItems();
   }
 

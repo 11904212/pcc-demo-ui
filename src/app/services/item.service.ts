@@ -49,12 +49,19 @@ export class ItemService {
   }
 
   public setDateRange(start: Date, end: Date):void {
-    this.dateRangeStart = start;
-    this.dateRangeEnd = end;
+    if (this.dateRangeStart !== start || this.dateRangeEnd !== end){
+      this.dateRangeStart = start;
+      this.dateRangeEnd = end;
+      this.resetState();
+    }
   }
 
   public setFilterCloudy(filterCloudy: boolean):void {
-    this.filterCloudy = filterCloudy;
+    if(this.filterCloudy !== filterCloudy){
+      this.filterCloudy = filterCloudy;
+      this.resetState();
+    }
+
   }
 
   public loadItems(): void {
