@@ -7,6 +7,7 @@
   <canvas baseChart height="200"
           [data]="lineChartData"
           [type]="'line'"
+          (chartClick)="clickOnChart($event)"
           [options]="chartOptions">
   </canvas>
   <mat-error>{{statsError$ | async}}</mat-error>

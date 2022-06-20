@@ -4,6 +4,7 @@ import {StatisticsService} from "../../services/statistics.service";
 import {Stats} from "../../models/stats";
 import {BaseChartDirective} from "ng2-charts";
 import {formatDate} from "@angular/common";
+import {ImageService} from "../../services/image.service";
 
 @Component({
   selector: 'app-statistics-chart',
@@ -12,6 +13,7 @@ import {formatDate} from "@angular/common";
 })
 export class StatisticsChartComponent implements OnInit {
 
+  private itemIds: string[] = [];
   private labels: string[] = [];
   private dataAvg: number[] = [];
   private dataMin: number[] = [];
@@ -52,7 +54,8 @@ export class StatisticsChartComponent implements OnInit {
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   constructor(
-    private statisticsService: StatisticsService
+    private statisticsService: StatisticsService,
+    private imageService: ImageService,
   ) { }
 
   ngOnInit(): void {
@@ -61,8 +64,20 @@ export class StatisticsChartComponent implements OnInit {
     )
   }
 
+  clickOnChart(event: any):void {
+
+    const action = event.active;
+    if (action.length > 0) {
+      const itemId = this.itemIds[action[0].index];
+      if (itemId) {
+        this.imageService.setItemId(itemId);
+      }
+    }
+  }
+
   private updateChart(stats: Stats[]){
     const sortedStats = [...stats];
+    this.itemIds.length = 0;
     this.labels.length = 0;
     this.dataAvg.length = 0;
     this.dataMin.length = 0;
@@ -71,12 +86,13 @@ export class StatisticsChartComponent implements OnInit {
       return a.dateTime < b.dateTime ? -1: 1
     });
     sortedStats.forEach(stat => {
+      this.itemIds.push(stat.itemId);
       const date = stat.dateTime;
       const formatedDate = formatDate(date, "yyyy-MM-dd", "en_US", "UTC");
       this.labels.push(formatedDate);
       this.dataAvg.push(stat.ndviAvg);
       this.dataMax.push(stat.ndviMax);
-      this.dataMin.push(stat.ndviMin)
+      this.dataMin.push(stat.ndviMin);
       }
     );
 
