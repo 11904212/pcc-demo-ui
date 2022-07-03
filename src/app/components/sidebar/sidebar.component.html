@@ -18,7 +18,7 @@
             [disabled]="$itemsLoading | async"
             (click)="drawPolygon()"
             [ngClass]="($userIsDrawing | async) ? 'button-faded':''"
-    ><mat-icon>draw</mat-icon> draw ploygon</button>
+    ><mat-icon>draw</mat-icon> draw polygon</button>
 
     <mat-slide-toggle color="primary" [formControl]="toggleCloudyForm" [disabled]="($lockInput | async) ?? false">filter cloudy images</mat-slide-toggle>
 
