@@ -26,6 +26,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {ScrollingModule} from "@angular/cdk/scrolling";
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
         NgChartsModule,
         MatCheckboxModule,
         ScrollingModule,
-        MatProgressBarModule
+        MatProgressBarModule,
+        MatTooltipModule
     ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
