@@ -23,7 +23,7 @@ export class ItemListComponent implements OnInit, OnDestroy{
 
   readonly imageTypeOptions = ImageType;
 
-  private selectedStatsItems = new BehaviorSubject<Set<ItemInfo>>(new Set())
+  selectedStatsItems$ = new BehaviorSubject<Set<ItemInfo>>(new Set())
 
   selectedImageType = ImageType.TCI;
 
@@ -34,13 +34,17 @@ export class ItemListComponent implements OnInit, OnDestroy{
   ) { }
 
   ngOnInit(): void {
-    this.selectedStatsItems.pipe(
+    this.selectedStatsItems$.pipe(
       debounceTime(1000),
       filter(set => set.size > 0),
       takeUntil(this.unsubscribe)
     ).subscribe(set => {
       this.statisticsService.setItems([...set]);
     });
+
+    this.itemList$.pipe(
+      takeUntil(this.unsubscribe)
+    ).subscribe(() => this.selectedStatsItems$.next(new Set()));
   }
 
   ngOnDestroy() {
@@ -57,13 +61,13 @@ export class ItemListComponent implements OnInit, OnDestroy{
   }
 
   updateSelectedStats(event: MatCheckboxChange, item: ItemInfo){
-    const set = this.selectedStatsItems.value;
+    const set = this.selectedStatsItems$.value;
     if(event.checked) {
       set.add(item);
     } else {
       set.delete(item);
     }
-    this.selectedStatsItems.next(set);
+    this.selectedStatsItems$.next(set);
   }
 
 
