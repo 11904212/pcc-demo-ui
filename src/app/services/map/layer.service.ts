@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Layer, Tile} from "ol/layer";
-import {OSM, Stamen} from "ol/source";
+import {OSM, TileImage} from "ol/source";
 import {MapService} from "./map.service";
 
 @Injectable({
@@ -32,18 +32,18 @@ export class LayerService {
     const osmLayer = new Tile({
       source: new OSM(),
       visible: true,
-      className: 'osm'
+      className: 'street map @OSM'
     });
 
-    const stamenLayer = new Tile({
-      source: new Stamen({
-        layer: 'terrain'
+    const satelliteLayer = new Tile({
+      source: new TileImage({
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
       }),
       visible: false,
-      className: 'stamen'
+      className: 'satellite @ArcGIS'
     });
 
-    this.layers = [ osmLayer, stamenLayer ];
+    this.layers = [ osmLayer, satelliteLayer ];
 
     const map = this.mapService.getMap();
     this.layers.forEach(layer => map.addLayer(layer));
