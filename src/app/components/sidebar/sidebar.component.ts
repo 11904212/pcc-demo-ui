@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ItemService} from "../../services/item.service";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {DrawService} from "../../services/map/draw.service";
 import {environment} from "../../../environments/environment";
 import {combineLatest, debounceTime, filter, map, tap} from "rxjs";
@@ -23,11 +23,11 @@ export class SidebarComponent implements OnInit{
     map(([lodaing, drawing]) => lodaing || drawing)
   );
 
-  toggleCloudyForm = new FormControl(true, []);
+  toggleCloudyForm = new UntypedFormControl(true, []);
 
-  range = new FormGroup({
-    start: new FormControl(null, Validators.required),
-    end: new FormControl(null, Validators.required),
+  range = new UntypedFormGroup({
+    start: new UntypedFormControl(null, Validators.required),
+    end: new UntypedFormControl(null, Validators.required),
   });
 
   dateFilter = (date: Date) => date <= this.today;
