@@ -23,7 +23,7 @@ export class SidebarComponent implements OnInit{
     map(([lodaing, drawing]) => lodaing || drawing)
   );
 
-  toggleCloudyForm = new UntypedFormControl(true, []);
+  toggleCloudyForm = new UntypedFormControl(false, []);
 
   range = new UntypedFormGroup({
     start: new UntypedFormControl(null, Validators.required),

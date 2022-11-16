@@ -21,7 +21,7 @@ export class ItemService {
   private collections: string[] = ['sentinel-2-l2a'];
   private dateRangeStart: Date;
   private dateRangeEnd: Date;
-  private filterCloudy: boolean = true;
+  private filterCloudy: boolean = false;
 
   constructor(
     private httpClient: HttpClient,
@@ -78,7 +78,8 @@ export class ItemService {
       collections: this.collections,
       dateTimeFrom: this.dateRangeStart.toISOString(),
       dateTimeTo: this.dateRangeEnd.toISOString(),
-      filterCloudy: this.filterCloudy
+      filterCloudy: this.filterCloudy,
+      limit: 25
     }
 
     this.httpClient.post<ItemInfoDto[]>(
@@ -87,7 +88,11 @@ export class ItemService {
     ).subscribe({
       next: value => {
         this.items$.next(value.map(item => ItemService.mapDtoToModel(item)));
-        this.error$.next("");
+        if (value.length === 0){
+          this.error$.next("could not find item in date range")
+        } else {
+          this.error$.next("");
+        }
         this.loading$.next(false);
       },
       error: err => {
