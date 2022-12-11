@@ -1,30 +1,21 @@
 # source https://www.indellient.com/blog/how-to-dockerize-an-angular-application-with-nginx/
 
-# Stage 1: Compile and Build angular codebase
-
-# Use official node image as the base image
+# Stage 1: Build
 FROM node:16 as build
 
-# Set the working directory
+# Copy and install all required dependencies
 WORKDIR /usr/local/app
-
-# Add the package.json to app
 COPY package.json package-lock.json /usr/local/app/
-# Install all the dependencies
 RUN npm install
 
-# Add the source code to app
+# Copy source and build app
 COPY ./ /usr/local/app/
-# Generate the build of the application
 RUN npm run build
 
-# Stage 2: Serve app with nginx server
 
-# Use official nginx image as the base image
-FROM nginx:latest
+# Stage 2: Serve app
+FROM nginx:1.23
 
-# Copy the build output to replace the default nginx contents.
+# Copy the app from build stage
 COPY --from=build /usr/local/app/dist/pcc-demo-ui /usr/share/nginx/html
-
-# Expose port 80
 EXPOSE 80
