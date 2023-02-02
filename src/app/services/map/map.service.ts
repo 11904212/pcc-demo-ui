@@ -28,6 +28,7 @@ export class MapService {
       view: new View({
         center: fromLonLat([15, 48]),
         zoom: 4,
+        maxZoom: 19
       }),
       layers: [
         new TileLayer({
