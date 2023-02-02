@@ -17,8 +17,6 @@
         <mat-checkbox class="checkbox"
                       (change)="updateSelectedStats($event, item)"
                       [checked]="(selectedStatsItems$ | async)?.has(item)"
-                      matTooltip="check to add item to NDVI statistics" matTooltipPosition="above"
-                      matTooltipShowDelay="1000"
         ></mat-checkbox>
         {{item.dateTime | date:"yyyy-MM-dd HH:mm":"UTC":"en_US"}}
         <ng-container *ngIf="(imageSelectedItemId$ | async) === item.id; else unselectedItem">
@@ -29,7 +27,6 @@
         <ng-template #unselectedItem>
           <button mat-mini-fab
                   (click)="loadImage(item)"
-                  matTooltip="load image" matTooltipPosition="above" matTooltipShowDelay="1000"
           ><mat-icon>visibility</mat-icon></button>
         </ng-template>
       </div>
@@ -52,7 +49,6 @@
 <ng-template #loadedItem>
   <button mat-mini-fab color="primary"
           (click)="removeImage()"
-          matTooltip="remove image from map" matTooltipPosition="above" matTooltipShowDelay="1000"
   ><mat-icon>visibility_off</mat-icon></button>
 </ng-template>
 
