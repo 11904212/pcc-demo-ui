@@ -13,7 +13,8 @@ import {combineLatest, debounceTime, filter, map, tap} from "rxjs";
 export class SidebarComponent implements OnInit{
 
   readonly today = new Date();
-  readonly defaultStart = new Date(this.today.valueOf() - (environment.defaultDateRange * 24 * 60 * 60 *1000));
+  readonly defaultStart = new Date(environment.defaultDatetimeFrom);
+  readonly defaultEnd = new Date(environment.defaultDatetimeTo);
 
   readonly $error = this.itemService.getError();
   readonly $itemsLoading = this.itemService.isLoading();
@@ -44,12 +45,12 @@ export class SidebarComponent implements OnInit{
 
     this.range.setValue({
       start: this.defaultStart,
-      end: this.today
+      end: this.defaultEnd
     })
 
     this.itemService.setDateRange(
       this.defaultStart,
-      this.today
+      this.defaultEnd
     );
 
     this.range.valueChanges.pipe(
