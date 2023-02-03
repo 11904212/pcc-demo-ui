@@ -35,7 +35,7 @@ export class ItemListComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void {
     this.selectedStatsItems$.pipe(
-      debounceTime(1000),
+      debounceTime(1500),
       filter(set => set.size > 0),
       takeUntil(this.unsubscribe)
     ).subscribe(set => {

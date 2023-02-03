@@ -2,7 +2,7 @@
   <div class="userInput">
 
     <mat-form-field appearance="outline">
-      <mat-label>Enter a date range</mat-label>
+      <mat-label>date interval</mat-label>
       <mat-date-range-input [formGroup]="range" [rangePicker]="picker" [dateFilter]="dateFilter" [disabled]="$lockInput | async">
         <input matStartDate formControlName="start" placeholder="Start date">
         <input matEndDate formControlName="end" placeholder="End date">
@@ -20,8 +20,9 @@
             [ngClass]="($userIsDrawing | async) ? 'button-faded':''"
     ><mat-icon>draw</mat-icon> draw polygon</button>
 
-    <mat-slide-toggle color="primary" [formControl]="toggleCloudyForm" [disabled]="($lockInput | async) ?? false">filter cloudy images</mat-slide-toggle>
+    <mat-slide-toggle color="primary" [formControl]="toggleCloudyForm" [disabled]="($lockInput | async) ?? false">filter cloudy items</mat-slide-toggle>
 
+    <mat-divider></mat-divider>
     <button mat-raised-button color="primary" [disabled]="$lockInput | async" (click)="loadItems()"
     ><mat-icon>refresh</mat-icon> load items</button>
     <mat-error>{{$error | async}}</mat-error>
@@ -30,6 +31,8 @@
   </div>
 
   <app-item-list class="itemList"></app-item-list>
+
+  <mat-divider></mat-divider>
 
   <app-statistics-chart></app-statistics-chart>
 
