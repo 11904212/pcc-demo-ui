@@ -3,8 +3,6 @@ Planetary Computer Client Demo UI
 
 A Angular based demonstration UI for interacting with [Planetary Computer Client Demo API](https://github.com/11904212/pcc-demo-api).
 
-A live demo can be found [here](https://pcc-demo-ui.duckdns.org).
-
 ### Remote Dependencies ###
 
 * [OpenLayers](https://github.com/openlayers/openlayers) (BSD 2-Clause "Simplified" License) - A high-performance, feature-packed library for creating interactive maps on the web.
